@@ -1,16 +1,14 @@
 package com.example.moovienetwork.Model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.moovienetwork.Dto.CategoryDto;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 @Entity
 public class Movie {
 
@@ -33,8 +31,8 @@ public class Movie {
     @Column
     private String actors;
 
-    @Column
-    private String pilot;
+    @Column(columnDefinition = "TEXT")
+    private String plot;
 
     @Column
     private String posterUrl;
@@ -47,5 +45,103 @@ public class Movie {
             name = "movie_category",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> movieCategories = new HashSet<>();
+    private Set<Category> genres = new HashSet<>();
+
+    @OneToMany(mappedBy = "movie")
+    private List<Comment> comments = new ArrayList<>();
+
+
+
+    public Movie() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
+    }
+
+    public String getRuntime() {
+        return runtime;
+    }
+
+    public void setRuntime(String runtime) {
+        this.runtime = runtime;
+    }
+
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
+    public String getActors() {
+        return actors;
+    }
+
+    public void setActors(String actors) {
+        this.actors = actors;
+    }
+
+    public String getPlot() {
+        return plot;
+    }
+
+    public void setPlot(String plot) {
+        this.plot = plot;
+    }
+
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
+    }
+
+    public Set<User> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<User> likes) {
+        this.likes = likes;
+    }
+
+    public Set<Category> getGenres() {
+        return genres;
+    }
+
+    public void setGenres(Set<Category> genres) {
+        this.genres = genres;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
+    }
+
+
 }
