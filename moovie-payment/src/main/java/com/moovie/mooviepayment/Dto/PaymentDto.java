@@ -1,4 +1,4 @@
-package com.moovie.moovienetwork.Dto;
+package com.moovie.mooviepayment.Dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -22,6 +22,8 @@ public class PaymentDto {
         this.premiumType = premiumType;
         this.amount = amount;
     }
+
+
 
     public String getEmail() {
         return email;

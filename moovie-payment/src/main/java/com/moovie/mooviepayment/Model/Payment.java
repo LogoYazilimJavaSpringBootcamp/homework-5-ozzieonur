@@ -1,9 +1,12 @@
-package com.moovie.moovienetwork.Dto;
+package com.moovie.mooviepayment.Model;
+
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-public class PaymentDto {
+@Document(collection = "Payment")
+public class Payment {
 
     private String email;
 
@@ -13,10 +16,10 @@ public class PaymentDto {
 
     private Double amount;
 
-    public PaymentDto() {
+    public Payment() {
     }
 
-    public PaymentDto(String email, LocalDate date, String premiumType, Double amount) {
+    public Payment(String email, LocalDate date, String premiumType, Double amount) {
         this.email = email;
         this.date = date;
         this.premiumType = premiumType;

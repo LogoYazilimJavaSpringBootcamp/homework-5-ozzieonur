@@ -2,6 +2,8 @@ package com.moovie.moovienetwork.Service;
 
 
 
+import com.moovie.moovienetwork.Client.PaymentClient;
+import com.moovie.moovienetwork.Dto.PaymentDto;
 import com.moovie.moovienetwork.Dto.SingUpDto;
 import com.moovie.moovienetwork.Dto.UserDto;
 import com.moovie.moovienetwork.Model.Category;
@@ -21,6 +23,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -31,14 +34,17 @@ public class UserService implements UserDetailsService {
     final UserRepository userRepository;
     final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    final PaymentClient paymentClient;
+
     final MovieRepository movieRepository;
     final ModelMapper modelMapper;
 
     Random rand = new Random();
 
-    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, MovieRepository movieRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, PaymentClient paymentClient, MovieRepository movieRepository, ModelMapper modelMapper) {
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.paymentClient = paymentClient;
         this.movieRepository = movieRepository;
         this.modelMapper = modelMapper;
     }
@@ -56,10 +62,33 @@ public class UserService implements UserDetailsService {
     public UserDto updateUser(UserDto request) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User foundUser = userRepository.findByEmail(email);
+
         if (request.getFullName() != null) foundUser.setFullName(request.getFullName());
         if (request.getPassword() != null) foundUser.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         if(request.getRole() != null) foundUser.setRole(request.getRole());
-        if(request.getUserType() != null) foundUser.setUserType(request.getUserType());
+        if(request.getUserType() != null){
+            PaymentDto paymentDto = new PaymentDto(foundUser.getEmail(), LocalDate.now(),request.getUserType().toString(), 0.00);
+
+            if(request.getUserType() == UserType.MONTHLY){
+                paymentDto.setDate(LocalDate.now().plusMonths(1));
+                paymentDto.setAmount(100.00);
+            }
+            else if(request.getUserType() == UserType.HALFYEARLY){
+                paymentDto.setDate(LocalDate.now().plusMonths(6));
+                paymentDto.setAmount(300.00);
+            }
+            else if(request.getUserType() == UserType.YEARLY){
+                paymentDto.setDate(LocalDate.now().plusMonths(12));
+                paymentDto.setAmount(500.00);
+            }
+            else if(request.getUserType() == UserType.INFINITELY){
+                paymentDto.setDate(LocalDate.now().plusYears(50));
+                paymentDto.setAmount(1000.00);
+            }
+
+            paymentClient.createPayment(paymentDto);
+            foundUser.setUserType(request.getUserType());
+        }
 
         log.info(foundUser.getFullName() + " adlı kullanıcı güncellendi.");
         return modelMapper.map(userRepository.save(foundUser), UserDto.class);

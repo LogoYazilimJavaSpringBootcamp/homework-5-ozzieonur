@@ -1,32 +1,20 @@
-## **HOMEWORK-5**
-1. Spring Profile nedir? Properties ya da yml dosya formları ile isbasi uygulamasına test
-profile ekleyin.(5 Puan)
-2. SQL injection örnekleyin. Nasıl korunabiliriz?(5 Puan)
-3. Aşağıdaki kurallara göre bir film öneri uygulaması yazın. (90 Puan)
+## Gerekli İşlemler ve Değişiklikler
 
-### **Teknolojiler;**
-* Min Java8
-* Spring Boot
-* Restfull
-* MySQL - Postgre - Mongo(Her servis farklı database kullanabilir)
-* RabbitMQ
+Kayıt olan kullanıcıların 2 tür rolü olabilir: "Admin" ve "User".
 
-### **Gereksinimler;**
+Admin rolüne sahip kullanıcılar film ve kategori ekleyebilir, güncelleyebilir ve silebilirler.
 
-* Kullanıcı sisteme kayıt olup, login olabilmelidir.(Login işlemi için email ve şifre bilgileri
-gereklidir.)
-* Kullanıcı şifresi istediğiniz bir hashing algoritmasıyla database kaydedilmelidir.
-* Kullanıcılar sisteme film ekleyebilir ve bu filmler herkes tarafından görülebilir.
-* Kullanıcı kendi eklediği filmleri görebilmeli.(Profil sayfası gibi düşünün)
-* Kullanıcı şifresini ve ismini değiştirebilir.
-* Ücretli üye olmayan kullanıcılar sadece 3 film ekleyebilir.
-* Ücretli üye olmayan kullanıcılar filmlere yorum yapamaz.
-* Sisteme yeni bir film girildiğinde kullanıcılara email gider.
-* Sistemi takip edebilmek için gerekli gördüğünüz yerlere Log ekleyin.
+User rolüne sahip olan kullanıcılar sistemdeki filmlerden istediklerini beğenip profiline kaydedebilir ve bu işlem üzerinden kullanıcılara film önerisi yapılır.
 
-### **Sistem Kabulleri;**
+Kullanıcı tüm endpointlere ulaşabilmek için register olduktan sonra basic auth ile giriş yapmalıdır. Kullanıcı giriş yaptıktan sonra cookie kısmında kullanıcı bilgileri tutulur ve sisteme erişim sağlayabilir.
 
-* Ödeme işlemi senkron gerçekleşmelidir.
-* Ödeme servisi sadece ödeme bilgilerini kaydeder ve başarılı response döner.
-* Email gönderme işlemi asenkron gerçekleşmelidir.
-* Üyelikler 1-3-6-12 ay olarak alınabilir.
+Sistemin düzgün çalışabilmesi için postman collectiondaki "Do This At Beginning" klasöründeki endpointleri tek tek çalıştırmanız gerekmektedir.
+
+Admin yetkisine sahip kullanıcılar sisteme her film eklediğinde sistemdeki tüm kullanıcılara mail gönderilir.
+
+Kullanıcı userType'ı güncellendiğinde, yani kullanıcı premium olmak istediğinde payment servisi senkron olarak çalışır ve payment modeli mongoDB veritabanına kaydedilir.
+
+Kullanıcı premium değilse maksimum 3 film beğenebilir ve yorum yapamaz.
+
+Json dökümantasyonunu bu linkten import edebilirsiniz.
+https://www.postman.com/collections/e48d3ecbadbf85b11209
