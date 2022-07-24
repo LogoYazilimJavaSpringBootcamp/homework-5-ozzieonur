@@ -48,3 +48,5 @@ Bu saldırılardan korunmak için çeşitli önlemler almamız gerekmektedir:
 ## Spring Profile Nedir ? 
 
 Spring Boot Profile uygulamamızdaki farklı çalışma isterlerine göre programımızın hangi işlevinin çalışacağını isteğimize göre seçmemizi sağlar. Uygulamaların canlıya alınma aşamalarında dahil olmak üzere farklı ortamlardaki database bağlantısı, servis adresleri, port adresi, security ve cache mekanizmaları gibi konfigrasyonları yönetilebilir hale getirir.
+
+> Spring test profile, properties dosyası olarak eklendi.
